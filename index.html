@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>localnotes.page</title>
+  <meta name="description" content="Local notes, in your browser, without the cloud" />
+  <meta name="author" content="Ben Winding" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    #editor {
+      width: calc(100% - 20px);
+      min-height: calc(100% - 20px);
+      padding: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      outline: none;
+    }
+    #editor:empty::before {
+      content: 'Add text here!';
+      font-size: 20px;
+      font-style: italic;
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="editor" autofocus contenteditable="true"></div>
+
+  <script>
+    // JS not required for basic use!!!
+    const cached = window.localStorage.getItem('note');
+    const editor = document.querySelector('#editor');
+    if (cached && cached !== '<br>') {
+      editor.innerHTML = cached
+    };
+
+    editor.addEventListener('input', () => {
+      window.localStorage.setItem('note', editor.innerHTML);
+    })
+
+  </script>
+
+  <input type="checkbox" class="check" id="checked">
+  <label class="menu-btn" for="checked">
+    <span class="bar top"></span>
+    <span class="bar middle"></span>
+    <span class="bar bottom"></span>
+  </label>
+  <label class="close-menu" for="checked"></label>
+  <div class="drawer-menu">
+    <h1>localnotes.page</h1>
+    <p>JavaScript is not required</p>
+    <p>But if you have JavaScript, you get:</p>
+    <ul>
+      <li>Local caching</li>
+      <li>🔜 Txt file export</li>
+      <li>🔜 Offline mode</li>
+      <li>🔜 Keyboard shortcuts</li>
+    </ul>
+    <p>Source code (it's a single HTML file)</p>
+    <p>Author <a href="https://benwinding.com">Ben Winding</a></p>
+  </div>
+
+  <style>
+    /* drawer menu */
+    .drawer-menu {
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 0;
+      overflow: hidden;
+      height: 100%;
+      padding: 10px;
+      background: rgb(248, 248, 248);
+      border-left: 2px solid #eee;
+      opacity: 0;
+      color: #999;
+    }
+    .drawer-menu > * {
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .drawer-menu > h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .drawer-menu > ol {
+      font-size: 15px;
+      text-align: left;
+    }
+
+    /* checkbox */
+    .check {
+      display: none;
+    }
+
+    /* menu button - label tag */
+    .menu-btn {
+      position: fixed;
+      display: block;
+      top: 20px;
+      right: 20px;
+      display: block;
+      width: 20px;
+      height: 20px;
+      font-size: 10px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 3;
+    }
+
+    .bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: #bbb;
+      transition: all .5s;
+      transform-origin: left top;
+    }
+
+    .bar.middle {
+      top: 10px;
+      opacity: 1;
+    }
+
+    .bar.bottom {
+      top: 20px;
+      transform-origin: left bottom;
+    }
+
+    .menu-btn:hover .bar {
+      background: #999;
+    }
+
+    .menu-btn:hover .menu-btn__text {
+      color: #999;
+    }
+
+    .close-menu {
+      position: fixed;
+      top: 0;
+      right: 300px;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0);
+      transition-property: all;
+      transition-duration: .3s;
+      transition-delay: 0s;
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    /* checked */
+    .check:checked~.drawer-menu {
+      transition-delay: .3s;
+      transform: none;
+      opacity: 1;
+      width: 300px;
+      z-index: 2;
+    }
+
+    .check:checked~.contents {
+      transition-delay: 0s;
+      transform: translateX(-300px);
+    }
+
+    .check:checked~.menu-btn .menu-btn__text {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .check:checked~.menu-btn .bar.top {
+      width: 30px;
+      transform: rotate(45deg);
+    }
+
+    .check:checked~.menu-btn .bar.middle {
+      opacity: 0;
+    }
+
+    .check:checked~.menu-btn .bar.bottom {
+      width: 30px;
+      top: 20px;
+      transform: rotate(-45deg);
+    }
+
+    .check:checked~.close-menu {
+      transition-duration: 1s;
+      transition-delay: .3s;
+      background: rgba(0, 0, 0, .5);
+      visibility: visible;
+      opacity: 1;
+      z-index: 3;
+    }
+  </style>
+</body>
+
+</html>
