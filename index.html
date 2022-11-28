@@ -33,20 +33,6 @@
 <body>
   <div id="editor" autofocus contenteditable="true"></div>
 
-  <script>
-    // JS not required for basic use!!!
-    const cached = window.localStorage.getItem('note');
-    const editor = document.querySelector('#editor');
-    if (cached && cached !== '<br>') {
-      editor.innerHTML = cached
-    };
-
-    editor.addEventListener('input', () => {
-      window.localStorage.setItem('note', editor.innerHTML);
-    })
-
-  </script>
-
   <!-- top nav items -->
   <input type="checkbox" class="hidden" id="checkbox-menu">
   <label class="top-icon menu-open" for="checkbox-menu">
@@ -62,8 +48,12 @@
   <div class="drawer-menu">
     <div class="content">
       <h1>localnotes.page</h1>
-      <button id="btn-export-txt">Export as TXT</button>
     </div>
+  </div>
+
+  <div class="export-txt-wrapper">
+    <span>Download as TXT file</span>
+    <button id="btn-export-txt">⇩</button>
   </div>
 
   <label class="help-backdrop hidden" for="checkbox-help">
@@ -82,7 +72,49 @@
     </div>
   </label>
 
+  <script>
+    // Caching
+    const cached = window.localStorage.getItem('note');
+    const editor = document.querySelector('#editor');
+    if (cached && cached !== '<br>') {
+      editor.innerHTML = cached
+    };
+    editor.addEventListener('input', () => {
+      window.localStorage.setItem('note', editor.innerHTML);
+    })
+
+    // Export txt
+    const btnExport = document.querySelector('#btn-export-txt');
+    btnExport.addEventListener('click', () => {
+      const txt = editor.innerText;
+      const link = document.createElement('a');
+      link.setAttribute('download', 'filename');
+      link.append("Download!");
+      link.setAttribute('href', 'data:,' + encodeURI(txt));
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  </script>
+
   <style>
+    #btn-export-txt {
+    }
+    .export-txt-wrapper {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+    }
+    .export-txt-wrapper > span {
+      display: none;
+      background-color: #eee;
+      border-radius: 3px;
+      padding: 2px 5px;
+      margin-bottom: 2px;
+    }
+    .export-txt-wrapper:hover > span {
+      display: block;
+    }
     /* drawer menu */
     .drawer-menu {
       box-sizing: border-box;
