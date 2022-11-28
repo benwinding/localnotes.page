@@ -4,6 +4,7 @@
   <title>localnotes.page</title>
   <meta name="description" content="Local notes, stored in your browser, without the cloud" />
   <meta name="author" content="Ben Winding" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect fill='%23eee' rx='3' width='24' height='24'%3E%3C/rect%3E%3Cpath d='M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z' fill='%23222'%3E%3C/path%3E%3C/svg%3E" >
   <style>
     html, body {
@@ -46,26 +47,40 @@
 
   </script>
 
-  <input type="checkbox" class="check" id="checked">
-  <label class="menu-btn" for="checked">
+  <!-- top nav items -->
+  <input type="checkbox" class="hidden" id="checkbox-menu">
+  <label class="top-icon menu-open" for="checkbox-menu">
     <span class="bar top"></span>
     <span class="bar middle"></span>
     <span class="bar bottom"></span>
   </label>
-  <label class="close-menu" for="checked"></label>
+  <label class="top-icon menu-close hidden" for="checkbox-menu"></label>
+
+  <input type="checkbox" class="hidden" id="checkbox-help">
+  <label class="top-icon help-btn" for="checkbox-help"></label>
+
   <div class="drawer-menu">
-    <h1>localnotes.page</h1>
-    <p>JavaScript is not required</p>
-    <p>But if you have JavaScript, you get:</p>
-    <ul>
-      <li>Local caching</li>
-      <li>🔜 Txt file export</li>
-      <li>🔜 Offline mode</li>
-      <li>🔜 Keyboard shortcuts</li>
-    </ul>
-    <p>Source code: it's a single HTML file, but here's <a href="https://github.com/benwinding/localnotes.page">the github source</a></p>
-    <p>Author <a href="https://benwinding.com">Ben Winding</a></p>
+    <div class="content">
+      <h1>localnotes.page</h1>
+      <button id="btn-export-txt">Export as TXT</button>
+    </div>
   </div>
+
+  <label class="help-backdrop hidden" for="checkbox-help">
+    <div class="help-popup content">
+      <h1>localnotes.page</h1>
+      <p>JavaScript is not required</p>
+      <p>But if you have JavaScript, you get:</p>
+      <ul>
+        <li>Local caching</li>
+        <li>🔜 Txt file export</li>
+        <li>🔜 Offline mode</li>
+        <li>🔜 Keyboard shortcuts</li>
+      </ul>
+      <p>Source code: it's a single HTML file, but here's <a href="https://github.com/benwinding/localnotes.page">the github source</a></p>
+      <p>Author <a href="https://benwinding.com">Ben Winding</a></p>
+    </div>
+  </label>
 
   <style>
     /* drawer menu */
@@ -77,36 +92,41 @@
       width: 0;
       overflow: hidden;
       height: 100%;
-      padding: 10px;
       background: rgb(248, 248, 248);
       border-left: 2px solid #eee;
       opacity: 0;
       color: #999;
     }
-    .drawer-menu > * {
+    .content {
+      padding: 10px;
+    }
+    .content > * {
       font-family: 'Courier New', Courier, monospace;
     }
-    .drawer-menu > h1 {
+    .content > h1 {
       margin: 0;
       font-size: 20px;
     }
-    .drawer-menu > ol {
+    .content > ol {
       font-size: 15px;
       text-align: left;
     }
 
-    /* checkbox */
-    .check {
+    .top-icon {
+      top: 10px;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .hidden {
       display: none;
     }
 
     /* menu button - label tag */
-    .menu-btn {
-      position: fixed;
-      display: block;
-      top: 20px;
-      right: 20px;
-      display: block;
+    .menu-open {
+      right: 10px;
       width: 20px;
       height: 20px;
       font-size: 10px;
@@ -137,69 +157,96 @@
       transform-origin: left bottom;
     }
 
-    .menu-btn:hover .bar {
+    .menu-open:hover .bar {
       background: #999;
     }
 
-    .menu-btn:hover .menu-btn__text {
-      color: #999;
-    }
-
-    .close-menu {
-      position: fixed;
+    .menu-close {
       top: 0;
+      position: absolute;
+      display: block;
       right: 300px;
       width: 100%;
       height: 100vh;
       background: rgba(0, 0, 0, 0);
       transition-property: all;
       transition-duration: .3s;
-      transition-delay: 0s;
       visibility: hidden;
       opacity: 0;
     }
 
     /* checked */
-    .check:checked~.drawer-menu {
-      transition-delay: .3s;
+    #checkbox-menu:checked~.drawer-menu {
       transform: none;
       opacity: 1;
       width: 300px;
       z-index: 2;
     }
 
-    .check:checked~.contents {
-      transition-delay: 0s;
-      transform: translateX(-300px);
-    }
-
-    .check:checked~.menu-btn .menu-btn__text {
-      visibility: hidden;
-      opacity: 0;
-    }
-
-    .check:checked~.menu-btn .bar.top {
+    #checkbox-menu:checked~.menu-open .bar.top {
       width: 30px;
       transform: rotate(45deg);
     }
 
-    .check:checked~.menu-btn .bar.middle {
+    #checkbox-menu:checked~.menu-open .bar.middle {
       opacity: 0;
     }
 
-    .check:checked~.menu-btn .bar.bottom {
+    #checkbox-menu:checked~.menu-open .bar.bottom {
       width: 30px;
       top: 20px;
       transform: rotate(-45deg);
     }
 
-    .check:checked~.close-menu {
-      transition-duration: 1s;
-      transition-delay: .3s;
+    #checkbox-menu:checked~.menu-close {
+      transition-duration: 0.5s;
       background: rgba(0, 0, 0, .5);
       visibility: visible;
       opacity: 1;
       z-index: 3;
+    }
+
+    .help-btn {
+      margin-top: -1px;
+      right: 40px;
+      width: 22px;
+      height: 22px;
+      border: #eee solid 1px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .help-btn::after {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 10px;
+      content: '?';
+    }
+
+    .help-backdrop {
+      transition: all;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .help-popup {
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      max-width: 500px;
+      max-height: 70vh;
+      overflow-y: auto;
+      margin: 10px;
+    }
+
+    #checkbox-help:checked~.help-backdrop {
+      background: rgba(0, 0, 0, .5);
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
     }
   </style>
 </body>
