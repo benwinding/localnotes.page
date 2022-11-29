@@ -60,7 +60,7 @@
         <li>Local caching</li>
         <li>Txt file export</li>
         <li>Keyboard shortcuts</li>
-        <li>🔜 Offline mode</li>
+        <li>Offline mode</li>
       </ul>
       <h2>Tech</h2>
       <ul>
@@ -98,6 +98,13 @@
       link.click();
       document.body.removeChild(link);
     });
+
+    // Offline mode
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('./offlinemode-service-worker.js');
+      });
+    }
   </script>
 
   <style>
