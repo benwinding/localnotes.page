@@ -86,11 +86,12 @@
     // Export txt
     const btnExport = document.querySelector('#btn-export-txt');
     btnExport.addEventListener('click', () => {
-      const txt = editor.innerText;
+      const fileContent = editor.innerText;
+      const fileName = `localnotes.page-${new Date().toISOString()}`;
       const link = document.createElement('a');
-      link.setAttribute('download', 'filename');
+      link.setAttribute('download', fileName);
       link.append("Download!");
-      link.setAttribute('href', 'data:,' + encodeURI(txt));
+      link.setAttribute('href', 'data:,' + encodeURI(fileContent));
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -101,7 +102,7 @@
     #btn-export-txt {
     }
     .export-txt-wrapper {
-      position: absolute;
+      position: fixed;
       bottom: 10px;
       left: 10px;
     }
@@ -146,7 +147,7 @@
 
     .top-icon {
       top: 10px;
-      position: absolute;
+      position: fixed;
       width: 20px;
       height: 20px;
       cursor: pointer;
@@ -195,7 +196,6 @@
 
     .menu-close {
       top: 0;
-      position: absolute;
       display: block;
       right: 300px;
       width: 100%;
@@ -273,7 +273,7 @@
 
     #checkbox-help:checked~.help-backdrop {
       background: rgba(0, 0, 0, .5);
-      position: absolute;
+      position: fixed;
       left: 0;
       right: 0;
       top: 0;
