@@ -87,7 +87,8 @@
     const btnExport = document.querySelector('#btn-export-txt');
     btnExport.addEventListener('click', () => {
       const fileContent = editor.innerText;
-      const fileName = `localnotes.page-${new Date().toISOString()}`;
+      const timestamp = new Date().toISOString().replace(/\.[0-9]+Z$/g, '').replace(/[:.]/g, '_');
+      const fileName = `localnotes.page-${timestamp}.txt`;
       const link = document.createElement('a');
       link.setAttribute('download', fileName);
       link.append("Download!");
