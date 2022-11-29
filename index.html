@@ -34,41 +34,42 @@
   <div id="editor" autofocus contenteditable="true"></div>
 
   <!-- top nav items -->
-  <input type="checkbox" class="hidden" id="checkbox-menu">
-  <label class="top-icon menu-open" for="checkbox-menu">
-    <span class="bar top"></span>
-    <span class="bar middle"></span>
-    <span class="bar bottom"></span>
-  </label>
-  <label class="top-icon menu-close hidden" for="checkbox-menu"></label>
-
   <input type="checkbox" class="hidden" id="checkbox-help">
   <label class="top-icon help-btn" for="checkbox-help"></label>
 
-  <div class="drawer-menu">
-    <div class="content">
-      <h1>localnotes.page</h1>
+  <input type="checkbox" class="hidden" id="checkbox-export">
+  <label class="top-icon export-btn" for="checkbox-export"></label>
+
+  <!-- Dialogs -->
+  <label id="export" class="dialog-backdrop hidden" for="checkbox-export">
+    <div class="dialog-popup content">
+      <h1>Export</h1>
+      <p>Here's some options to export the notes</p>
+      <noscript><p>Looks like you don't have JS enabled, you could always CTRL+C I suppose</p></noscript>
+      <button id="btn-export-txt">⬇ Download as TXT file</button>
     </div>
-  </div>
+  </label>
 
-  <div class="export-txt-wrapper">
-    <span>Download as TXT file</span>
-    <button id="btn-export-txt">⇩</button>
-  </div>
-
-  <label class="help-backdrop hidden" for="checkbox-help">
-    <div class="help-popup content">
+  <label id="help" class="dialog-backdrop hidden" for="checkbox-help">
+    <div class="dialog-popup content">
       <h1>localnotes.page</h1>
-      <p>JavaScript is not required</p>
-      <p>But if you have JavaScript, you get:</p>
+      <noscript><p>Looks like you don't have JS enabled, that's fine though!</p></noscript>
+      <p>Sometimes you just need to write stuff down, this could be that place</p>
+      <h2>Features</h2>
       <ul>
         <li>Local caching</li>
         <li>Txt file export</li>
         <li>Keyboard shortcuts</li>
         <li>🔜 Offline mode</li>
       </ul>
-      <p>Source code: it's a single HTML file, but here's <a href="https://github.com/benwinding/localnotes.page">the github source</a></p>
-      <p>Author <a href="https://benwinding.com">Ben Winding</a></p>
+      <h2>Tech</h2>
+      <ul>
+        <li>One index.html file</li>
+        <li>No dependencies or 3rd party libs</li>
+        <li>Source code: it's all in this html file, but here's <a href="https://github.com/benwinding/localnotes.page">the github source</a></li>
+      </ul>
+
+      <p>Created by <a href="https://benwinding.com">Ben Winding</a></p>
     </div>
   </label>
 
@@ -100,37 +101,10 @@
   </script>
 
   <style>
-    #btn-export-txt {
-    }
-    .export-txt-wrapper {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-    }
-    .export-txt-wrapper > span {
+    .hidden {
       display: none;
-      background-color: #eee;
-      border-radius: 3px;
-      padding: 2px 5px;
-      margin-bottom: 2px;
     }
-    .export-txt-wrapper:hover > span {
-      display: block;
-    }
-    /* drawer menu */
-    .drawer-menu {
-      box-sizing: border-box;
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 0;
-      overflow: hidden;
-      height: 100%;
-      background: rgb(248, 248, 248);
-      border-left: 2px solid #eee;
-      opacity: 0;
-      color: #999;
-    }
+
     .content {
       padding: 10px;
     }
@@ -152,133 +126,58 @@
       width: 20px;
       height: 20px;
       cursor: pointer;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    /* menu button - label tag */
-    .menu-open {
-      right: 10px;
-      width: 20px;
-      height: 20px;
-      font-size: 10px;
-      text-align: center;
-      cursor: pointer;
-      z-index: 3;
-    }
-
-    .bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      display: block;
-      width: 20px;
-      height: 1px;
-      background: #bbb;
-      transition: all .5s;
-      transform-origin: left top;
-    }
-
-    .bar.middle {
-      top: 10px;
-      opacity: 1;
-    }
-
-    .bar.bottom {
-      top: 20px;
-      transform-origin: left bottom;
-    }
-
-    .menu-open:hover .bar {
-      background: #999;
-    }
-
-    .menu-close {
-      top: 0;
-      display: block;
-      right: 300px;
-      width: 100%;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0);
-      transition-property: all;
-      transition-duration: .3s;
-      visibility: hidden;
-      opacity: 0;
-    }
-
-    /* checked */
-    #checkbox-menu:checked~.drawer-menu {
-      transform: none;
-      opacity: 1;
-      width: 300px;
-      z-index: 2;
-    }
-
-    #checkbox-menu:checked~.menu-open .bar.top {
       width: 30px;
-      transform: rotate(45deg);
-    }
-
-    #checkbox-menu:checked~.menu-open .bar.middle {
-      opacity: 0;
-    }
-
-    #checkbox-menu:checked~.menu-open .bar.bottom {
-      width: 30px;
-      top: 20px;
-      transform: rotate(-45deg);
-    }
-
-    #checkbox-menu:checked~.menu-close {
-      transition-duration: 0.5s;
-      background: rgba(0, 0, 0, .5);
-      visibility: visible;
-      opacity: 1;
-      z-index: 3;
-    }
-
-    .help-btn {
-      margin-top: -1px;
-      right: 40px;
-      width: 22px;
-      height: 22px;
+      height: 30px;
       border: #eee solid 1px;
       border-radius: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    .help-btn::after {
       font-family: 'Courier New', Courier, monospace;
-      font-size: 10px;
-      content: '?';
+      font-size: 20px;
     }
 
-    .help-backdrop {
+    .help-btn {
+      right: 10px;
+    }
+    .help-btn::after {
+      content: '?';
+    }
+    .export-btn {
+      right: 50px;
+    }
+    .export-btn::after {
+      content: '⬇';
+    }
+
+    .dialog-backdrop {
       transition: all;
       align-items: center;
       justify-content: center;
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
     }
 
-    .help-popup {
+    .dialog-popup {
       background-color: #fff;
       padding: 10px;
       border-radius: 5px;
+      min-width: 300px;
       max-width: 500px;
       max-height: 70vh;
       overflow-y: auto;
       margin: 10px;
     }
 
-    #checkbox-help:checked~.help-backdrop {
+    #checkbox-help:checked~#help {
       background: rgba(0, 0, 0, .5);
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
+      display: flex;
+    }
+    #checkbox-export:checked~#export {
+      background: rgba(0, 0, 0, .5);
       display: flex;
     }
   </style>
