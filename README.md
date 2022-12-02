@@ -1,4 +1,6 @@
-This is a simple site to write notes in
+This is a simple site to write notes in online/offline 👌
+
+https://localnotes.page/
 
 ## Features
 - [x] Single HTML file
